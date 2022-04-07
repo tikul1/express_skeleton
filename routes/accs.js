@@ -22,19 +22,21 @@ router.get("/:id", (req, res) => {
 // adding new data
 
 router.post("/", (req, res) => {
-  const newAccount = {
-    id: req.body.id,
-    username: req.body.username,
-    role: req.body.role,
-  };
-  if (!newAccount.id || !newAccount.username || !newAccount.role) {
-    res.status(400).json({ msg: "Please include id, username and role" });
-  } else {
-    accounts.push(newAccount);
-    res.json(accounts);
-  }
-});
+  const id = req.body.id;
+  const username = req.body.username;
+  const role = req.body.role;
 
+  const newAccount = new accounts({
+    id,
+    username,
+    role,
+  });
+
+  newAccount
+    .save()
+    .then(() => res.json("contact Added"))
+    .catch((err) => res.status(400).json(err));
+});
 //updating data
 
 router.put("/:id", (req, res) => {
